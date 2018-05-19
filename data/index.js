@@ -1,3 +1,5 @@
+const { getWeatherForCity } = require('./open-weather-map-api');
+
 const videoA = {
     id: 'a',
     title: 'bar',
@@ -29,6 +31,8 @@ const getVideoById = (id) => new Promise((resolve) => {
     const [video] = videos.filter(v => v.id === id );
     return resolve({video})
 })
+
+exports.getWeatherByCity = () => getWeatherForCity('glasgow', 'metric');
 
 exports.getObjectById = getObjectById;
 

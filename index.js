@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const { 
     GraphQLSchema, 
     GraphQLInputObjectType,
@@ -9,7 +11,8 @@ const {
     GraphQLInt,
     GraphQLBoolean,
     GraphQLNonNull,
-    GraphQLList
+    GraphQLList,
+    GraphQLFloat
 } = require('graphql');
 const express = require('express');  
 const graphlHTTP = require('express-graphql'); 
@@ -26,7 +29,8 @@ const {
 var {
     createVideo,
     getVideoById, 
-    getVideos
+    getVideos,
+    getWeatherByCity
 } = require('./data');
 
 const PORT = process.env.PORT || 3000;
@@ -55,6 +59,51 @@ const videoType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 })
 
+const OpenWeatherForecastMainType = new GraphQLObjectType({
+    name: 'OpenWeatherMapForecastMain',
+    description: 'Temperatures in the main type from an OpenWeatherMap forecast',
+    fields: {
+        temp: {
+            type: GraphQLFloat,
+            description: 'Expected temperature'
+        },
+        temp_min: {
+            type: GraphQLFloat,
+            description: 'Max temperature'
+        },
+        temp_max: {
+            type: GraphQLFloat,
+            description: 'Min temperature'
+        }
+    }
+})
+
+const openWeatherForecastType = new GraphQLObjectType({
+    name: 'OpenWeatherMapForecast',
+    description: '5 day, 3 hourly forecast',
+    fields: {
+        main: {
+            type: OpenWeatherForecastMainType,
+            description:  'Temperatures'
+        },
+        dt: {
+            type: GraphQLString, 
+            description: 'DateTime of forecast'
+        }
+    }
+})
+
+const openWeatherForecastQueryType = new GraphQLObjectType({
+    name: 'OpenWeatherForecastQueryType',
+    description: 'The root query type',
+    fields:{
+        forecast:{
+            type: new GraphQLList(openWeatherForecastType),
+            resolve: getWeatherByCity
+        }
+    }
+})
+
 exports.videoType = videoType;
 
 const { connectionType: VideoConnection }= connectionDefinitions({
@@ -68,6 +117,7 @@ const { connectionType: VideoConnection }= connectionDefinitions({
     })
 })
 
+/* 
 const queryType = new GraphQLObjectType({
     name: 'QueryType',
     description: 'The root query type',
@@ -127,16 +177,19 @@ const mutationType = new GraphQLObjectType({
         createVideo: videoMutation
     }
 })
+*/
+
 
 const schemaJS = new GraphQLSchema({
-    query: queryType,
-    mutation: mutationType
+    query: openWeatherForecastQueryType
 })
 
 server.use('/graphql', graphlHTTP({
     schema: schemaJS,
     graphiql: true
 }));
+
+server.use('/public', express.static(path.join(__dirname, 'public')))
 
 server.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT} `)
