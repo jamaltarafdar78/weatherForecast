@@ -189,7 +189,7 @@ server.use('/graphql', graphlHTTP({
     graphiql: true
 }));
 
-server.use('/public', express.static(path.join(__dirname, 'public')))
+server.use('/', express.static(path.join(__dirname, 'public')))
 
 server.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT} `)
