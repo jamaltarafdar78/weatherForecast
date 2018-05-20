@@ -18,6 +18,8 @@ const UKCitiesArray = [
 
 const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:city}));
 
+let selectedCity = UKCitiesSelectOptions[0];
+
 const getForecast = gql`query($city: String!){forecast(city: $city){main{temp}, dt}}`;
 
 const Forecast = ({temp}) => <div>
@@ -52,28 +54,28 @@ const Loader =  () => (<div>
     />
 </div>);
 
-const ForecastQuery = () => (<Query 
+const ForecastQuery = () => (<Query
     query={getForecast}
-    variables={{city: 'Glasgow'}}>{
-    
-    ({loading, error, data, refetch}) => {
-        if (error) return <div>Error!</div>
+    variables={{ city: selectedCity.value }}>{
 
-        return (
-            <div style={{ textAlign: "center", height: 200 }}>
-                {loading ? (<Loader />) : (<div> 
-                    <Select 
-                        onChange = { async ({value}) => {
-                            await refetch({city: value})
+        ({ loading, error, data, refetch }) => {
+            if (error) return <div>Error!</div>
+
+            return (
+                <div style={{ textAlign: "center", height: 200 }}>
+                    <Select
+                        value={selectedCity}
+                        onChange={async (selectedOption) => {
+                            selectedCity = selectedOption;
+                            await refetch({ city: selectedOption.value })
                         }}
-                        options={UKCitiesSelectOptions}/>
-                    <Forecasts {...data} />
-                </div>)} 
-            </div>
-        )
-        
+                        options={UKCitiesSelectOptions} />
+                    {loading ? (<Loader />) : (<Forecasts {...data} />)}
+                </div>
+            )
+        }
     }
-}</Query>)
+</Query>)
 
 const ApolloApp = () => (<ApolloProvider client={client}>
     <ForecastQuery/>
