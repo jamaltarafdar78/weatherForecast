@@ -31,10 +31,7 @@ const Forecasts = ({forecast}) => {
     : <div>No found</div>
 
     return (
-        <div>
-            <Select options={UKCitiesSelectOptions}/>
-            <ul>{items}</ul>
-        </div>
+        <ul>{items}</ul>
     );
 }
 
@@ -64,7 +61,14 @@ const ForecastQuery = () => (<Query
 
         return (
             <div style={{ textAlign: "center", height: 200 }}>
-                {loading ? (<Loader />) : (<Forecasts {...data} />)} 
+                {loading ? (<Loader />) : (<div> 
+                    <Select 
+                        onChange = { async ({value}) => {
+                            await refetch({city: value})
+                        }}
+                        options={UKCitiesSelectOptions}/>
+                    <Forecasts {...data} />
+                </div>)} 
             </div>
         )
         
