@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';   
 import { ApolloProvider, Query } from 'react-apollo';
 import ApolloClient, {gql} from 'apollo-boost';
+import Select from 'react-select';
 
 const client = new ApolloClient({
     uri: "/graphql"
@@ -15,6 +16,7 @@ const UKCitiesArray = [
     'London'
 ]
 
+const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:city}));
 
 const getForecast = gql`query{forecast{main{temp}, dt}}`;
 
@@ -29,7 +31,10 @@ const Forecasts = ({forecast}) => {
     : <div>No found</div>
 
     return (
-        <ul>{items}</ul>
+        <div>
+            <Select options={UKCitiesSelectOptions}/>
+            <ul>{items}</ul>
+        </div>
     );
 }
 
