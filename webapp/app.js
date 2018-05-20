@@ -18,7 +18,7 @@ const UKCitiesArray = [
 
 const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:city}));
 
-const getForecast = gql`query{forecast{main{temp}, dt}}`;
+const getForecast = gql`query($city: String!){forecast(city: $city){main{temp}, dt}}`;
 
 const Forecast = ({temp}) => <div>
     <div>{temp}</div>
@@ -55,7 +55,9 @@ const Loader =  () => (<div>
     />
 </div>);
 
-const ForecastQuery = () => (<Query query={getForecast}>{
+const ForecastQuery = () => (<Query 
+    query={getForecast}
+    variables={{city: 'Glasgow'}}>{
     
     ({loading, error, data, refetch}) => {
         if (error) return <div>Error!</div>

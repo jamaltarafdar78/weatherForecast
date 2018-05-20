@@ -32,7 +32,7 @@ const getVideoById = (id) => new Promise((resolve) => {
     return resolve({video})
 })
 
-exports.getWeatherByCity = () => getWeatherForCity('glasgow', 'metric');
+exports.getWeatherByCity = city => getWeatherForCity(city, 'metric');
 
 exports.getObjectById = getObjectById;
 

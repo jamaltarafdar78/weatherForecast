@@ -99,7 +99,13 @@ const openWeatherForecastQueryType = new GraphQLObjectType({
     fields:{
         forecast:{
             type: new GraphQLList(openWeatherForecastType),
-            resolve: getWeatherByCity
+            args: {
+                city: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: 'UK City'
+                }
+            },
+            resolve: (_, {city}) => getWeatherByCity(city)
         }
     }
 })
