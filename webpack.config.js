@@ -1,11 +1,12 @@
 const path = require('path');
 
 module.exports = {
-    entry: './webapp/app.js',
+    entry:  './webapp/app.js',
     output: {
         path: path.join(__dirname, 'public'),
         filename: 'dist/app.js'
     },
+    devtool: 'eval-source-map',
     module: {
         rules: [
             {
