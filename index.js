@@ -45,12 +45,16 @@ const OpenWeatherForecastMainType = new GraphQLObjectType({
 
 const OpenWeatherForecastWeatherType = new LevelerObjectType({
     name: 'OpenWeatherMapForecastWeather',
-    description: 'Weather icon from an OpenWeatherMap forecast',
+    description: 'Weather icon and description from an OpenWeatherMap forecast',
     fields: {
         icon: {
             type: GraphQLString,
             description: 'icon for weather'
-        }
+        },
+        description:{
+            type: GraphQLString,
+            description: 'description of weather'
+        },
     }
 })
 

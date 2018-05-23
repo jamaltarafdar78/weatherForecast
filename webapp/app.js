@@ -21,18 +21,21 @@ const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:cit
 let selectedCity = UKCitiesSelectOptions[0];
 
 // use levelling to map key main.temp to temp
-const getForecast = gql`query($city: String!){forecast(city: $city){temp:_get(path:"main.temp"), dt_txt}}`;
+const getForecast = gql`query($city: String!){forecast(city: $city){temp:_get(path:"main.temp"), dt_txt, weather{icon, description}}}`;
 
-const Forecast = ({temp}) => <div>
-    <div>{temp}</div>
-</div>
+const WeatherIconPath = icon => `https://openweathermap.org/img/w/${icon}.png`
+
+const WeatherIcon = ({icon, description}) => <img src={WeatherIconPath(icon)} alt={description}/>
 
 const Forecasts = ({forecast}) => {
-    const rows = forecast.map((item) => <tr key={item.dt}>
-            <td>{item.dt_txt}</td>
-            <td>{item.temp}</td>
+    const rows = forecast.map(({temp, dt_txt, weather}) => <tr key={dt_txt}>
+            <td>{dt_txt}</td>
+            <td>{temp}</td>
+            <td><WeatherIcon {...weather[0]}/></td>
         </tr>
     )
+
+    debugger;
 
     return (
         <table className="table table-hover">
@@ -40,6 +43,7 @@ const Forecasts = ({forecast}) => {
           <tr>
             <th>Date/Time</th>
             <th>Temperature (&deg;C)</th>
+            <th>Weather</th>
           </tr>
         </thead>
         <tbody>
