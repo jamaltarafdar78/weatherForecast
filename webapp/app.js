@@ -20,7 +20,8 @@ const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:cit
 
 let selectedCity = UKCitiesSelectOptions[0];
 
-const getForecast = gql`query($city: String!){forecast(city: $city){main{temp}, dt_txt}}`;
+// use levelling to map key main.temp to temp
+const getForecast = gql`query($city: String!){forecast(city: $city){temp:_get(path:"main.temp"), dt_txt}}`;
 
 const Forecast = ({temp}) => <div>
     <div>{temp}</div>
@@ -29,7 +30,7 @@ const Forecast = ({temp}) => <div>
 const Forecasts = ({forecast}) => {
     const rows = forecast.map((item) => <tr key={item.dt}>
             <td>{item.dt_txt}</td>
-            <td>{item.main.temp}</td>
+            <td>{item.temp}</td>
         </tr>
     )
 
@@ -38,7 +39,7 @@ const Forecasts = ({forecast}) => {
         <thead>
           <tr>
             <th>Date/Time</th>
-            <th>Temperature</th>
+            <th>Temperature (&deg;C)</th>
           </tr>
         </thead>
         <tbody>

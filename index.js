@@ -18,6 +18,8 @@ var {
     getWeatherByCity
 } = require('./data');
 
+const { LevelerObjectType } = require('graphql-leveler'); 
+
 const PORT = process.env.PORT || 3000;
 const server = express();
 
@@ -41,13 +43,28 @@ const OpenWeatherForecastMainType = new GraphQLObjectType({
     }
 })
 
-const openWeatherForecastType = new GraphQLObjectType({
+const OpenWeatherForecastWeatherType = new LevelerObjectType({
+    name: 'OpenWeatherMapForecastWeather',
+    description: 'Weather icon from an OpenWeatherMap forecast',
+    fields: {
+        icon: {
+            type: GraphQLString,
+            description: 'icon for weather'
+        }
+    }
+})
+
+const openWeatherForecastType = new LevelerObjectType({
     name: 'OpenWeatherMapForecast',
     description: '5 day, 3 hourly forecast',
     fields: {
         main: {
             type: OpenWeatherForecastMainType,
             description:  'Temperatures'
+        },
+        weather: {
+            type: new GraphQLList(OpenWeatherForecastWeatherType),
+            description: 'Weather'
         },
         dt_txt: {
             type: GraphQLString, 
@@ -56,7 +73,7 @@ const openWeatherForecastType = new GraphQLObjectType({
     }
 })
 
-const openWeatherForecastQueryType = new GraphQLObjectType({
+const openWeatherForecastQueryType = new LevelerObjectType({
     name: 'OpenWeatherForecastQueryType',
     description: 'The root query type',
     fields:{
