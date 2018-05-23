@@ -2576,11 +2576,22 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
+graphql-anyscalar@^1.1.0:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/graphql-anyscalar/-/graphql-anyscalar-1.1.2.tgz#2d2fa4b70e9573f953c5fb12faa4abf048163fe5"
+
 graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.10:
   version "4.1.10"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.10.tgz#247ada0c8d85b9d5d6b37180973442ac68ff15de"
   dependencies:
     apollo-utilities "^1.0.12"
+
+graphql-leveler@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/graphql-leveler/-/graphql-leveler-1.1.0.tgz#1611e7bb5e2d40702189a17d783d6412b845fe9c"
+  dependencies:
+    graphql-anyscalar "^1.1.0"
+    lodash "^4.17.4"
 
 graphql-relay@^0.5.5:
   version "0.5.5"

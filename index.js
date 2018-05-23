@@ -49,9 +49,9 @@ const openWeatherForecastType = new GraphQLObjectType({
             type: OpenWeatherForecastMainType,
             description:  'Temperatures'
         },
-        dt: {
+        dt_txt: {
             type: GraphQLString, 
-            description: 'DateTime of forecast'
+            description: 'DateTime Display of forecast'
         }
     }
 })

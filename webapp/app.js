@@ -20,20 +20,31 @@ const UKCitiesSelectOptions = UKCitiesArray.map(city => ({label: city, value:cit
 
 let selectedCity = UKCitiesSelectOptions[0];
 
-const getForecast = gql`query($city: String!){forecast(city: $city){main{temp}, dt}}`;
+const getForecast = gql`query($city: String!){forecast(city: $city){main{temp}, dt_txt}}`;
 
 const Forecast = ({temp}) => <div>
     <div>{temp}</div>
 </div>
 
 const Forecasts = ({forecast}) => {
-   const items = forecast ? forecast.map((item) => <li key={item.dt}>
-        {item.main.temp}
-    </li>)
-    : <div>No found</div>
+    const rows = forecast.map((item) => <tr key={item.dt}>
+            <td>{item.dt_txt}</td>
+            <td>{item.main.temp}</td>
+        </tr>
+    )
 
     return (
-        <ul>{items}</ul>
+        <table className="table table-hover">
+        <thead>
+          <tr>
+            <th>Date/Time</th>
+            <th>Temperature</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
     );
 }
 
